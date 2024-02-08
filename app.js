@@ -1,11 +1,21 @@
 import express from 'express';
 import { generateIdea } from './openai/ai.js';
 import cors from 'cors';
+import rateLimit from 'express-rate-limit';
 
 const app = express();
-app.use(cors());
+const option = {
+    windowMs: 60 * 1000,
+    max: 100,
+    message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+    standarHeaders: true,
+    legacyHeaders: false
+};
+const limiter = rateLimit(option);
 
+app.use(cors());
 app.use(express.json());
+app.use(limiter);
 
 app.post('/api/v1/generate', async (req, res) => {
     const { prompt, count } = req.body;
