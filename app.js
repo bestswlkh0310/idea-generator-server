@@ -6,7 +6,7 @@ import rateLimit from 'express-rate-limit';
 const app = express();
 const option = {
     windowMs: 60 * 1000,
-    max: 100,
+    max: 20,
     message: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
     standarHeaders: true,
     legacyHeaders: false
