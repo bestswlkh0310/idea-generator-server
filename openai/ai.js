@@ -4,8 +4,8 @@ import openai from './openai.js';
 export async function generateIdea(prompt, count) {
     const completion = await openai.chat.completions.create({
         messages: [
-            {role: "system", content: "키워드 추천 인공지능"},
-            {role: 'user', content: `${prompt} 키워드 ${count}가지`}
+            {role: "system", content: "관련된 단어를 말해주는 인공지능"},
+            {role: 'user', content: `${prompt}`}
         ],
         model: config.openai.ideaModel
     });
@@ -17,4 +17,20 @@ export async function generateIdea(prompt, count) {
     const arr = JSON.parse(content.replace(/'/g, '"'));
     console.debug(arr);
     return arr
+}
+
+export async function justGpt(prompt) {
+    const completion = await openai.chat.completions.create({
+        messages: [
+            {role: "system", content: "아이디어에 대해 조언해주는 인공지능"},
+            {role: 'user', content: `${prompt}`}
+        ],
+        model: 'gpt-3.5-turbo'
+    });
+
+    const message = completion.choices[0].message;
+    const content = message.content;
+    console.debug(content);
+
+    return content
 }
